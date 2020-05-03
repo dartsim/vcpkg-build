@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  release:
+    types: [published]
+  schedule:
+    # Run every day at 02:00
+    - cron: '0 2 * * 0-6'
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    env:
+      VCPKG_ROOT: C:\dartsim\vcpkg
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Install vcpkg
+      - name: Install vcpkg
+        shell: cmd
+        run: |
+          git clone -q --depth 1 https://github.com/microsoft/vcpkg.git %VCPKG_ROOT%
+          %VCPKG_ROOT%\bootstrap-vcpkg.bat
+      # Install DART dependencies
+      - name: Install vcpkg Packages
+        env:
+          VCPKG_OPTIONAL_PACKAGES: "boost-algorithm boost-lexical-cast boost-math bullet3 freeglut opengl tinyxml2 urdfdom"
+          # 'dart-utils' needs tinyxml2 and boost algorithm/lexical-cast
+          #   and also boost-math to resolve a circular dependency with lexical-cast
+          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "flann ipopt nlopt ode osg"
+        shell: cmd
+        run: |
+          %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
+          %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES%
+      # Remove temporary files
+      # https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
+      - name: Cleanup vcpkg Temporary Files
+        shell: cmd
+        run: |
+          RMDIR /Q/S %VCPKG_ROOT%\buildtrees
+          RMDIR /Q/S %VCPKG_ROOT%\packages
+          RMDIR /Q/S %VCPKG_ROOT%\downloads
+      - uses: actions/upload-artifact@v2
+        with:
+          name: vcpkg-dartsim-dependencies
+          path: C:\dartsim\vcpkg
+
+      - name: Prepare Release File
+        if: github.event_name == 'release'
+        shell: cmd
+        run: |
+          7z a vcpkg-dartsim-dependencies.zip %VCPKG_ROOT%
+      - name: Upload Release Asset
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./vcpkg-dartsim-dependencies.zip
+          asset_name: vcpkg-dartsim-dependencies.zip
+          asset_content_type: application/zip
