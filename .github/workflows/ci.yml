@@ -15,6 +15,7 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
+      VCPKG_VERSION: '2020.07'
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -24,7 +25,9 @@ jobs:
       - name: Install vcpkg
         shell: cmd
         run: |
-          git clone -q --depth 1 https://github.com/microsoft/vcpkg.git %VCPKG_ROOT%
+          git clone -q https://github.com/microsoft/vcpkg.git %VCPKG_ROOT%
+          cd /d %VCPKG_ROOT%
+          git checkout %VCPKG_VERSION%
           %VCPKG_ROOT%\bootstrap-vcpkg.bat
       # Install DART dependencies
       - name: Install vcpkg Packages
