@@ -24,7 +24,7 @@ jobs:
       - name: Install vcpkg
         shell: cmd
         run: |
-          git clone -q --depth 1 https://github.com/microsoft/vcpkg.git %VCPKG_ROOT%
+          git clone -q --depth 1 -b '2020.07' https://github.com/microsoft/vcpkg.git %VCPKG_ROOT%
           %VCPKG_ROOT%\bootstrap-vcpkg.bat
       # Install DART dependencies
       - name: Install vcpkg Packages
