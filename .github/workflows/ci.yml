@@ -15,7 +15,7 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "70f192e" # https://github.com/microsoft/vcpkg/commit/70f192e073dd9e5ed503fc1e86d8a54e2fbaceb4
+      VCPKG_VERSION: "2020.11-1" # released at 2020-11-03
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
