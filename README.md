@@ -8,8 +8,8 @@ This repository publishes archives of [vcpkg] with the [DART] dependencies insta
 
 The installed vcpkg packages are:
 
-* Required dependencies: `assimp, boost-system, boost-filesystem, ccd, eigen3, fcl`
-* Optional dependencies: `boost-algorithm, boost-lexical-cast, boost-math, bullet3, freeglut, ode, opengl, tinyxml2, urdfdom`
+- Required dependencies: `assimp, boost-system, boost-filesystem, ccd, eigen3, fcl`
+- Optional dependencies: `boost-algorithm, boost-lexical-cast, boost-math, bullet3, freeglut, ode, opengl, tinyxml2, urdfdom`
 
 To download the archives,
 
@@ -32,6 +32,5 @@ unzip -qq vcpkg-dartsim-dependencies.zip -d <path>
 1. Create a tag for the change in the pattern of `<this_repo_version>-<vcpkg_commit_or_tag>` (e.g., `v0.2.0-70f192e`)
 1. Create a release from the tag, then GitHub Actions will publish a new vcpkg archive that can be found in the Assets section in the [Release page](https://github.com/dartsim/vcpkg-build/releases).
 
-
-[DART]: https://github.com/dartsim/dart
+[dart]: https://github.com/dartsim/dart
 [vcpkg]: https://github.com/microsoft/vcpkg
