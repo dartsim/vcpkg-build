@@ -35,9 +35,9 @@ jobs:
           VCPKG_PACKAGES: "assimp boost-system boost-filesystem ccd eigen3 fcl"
           # 'dart-utils' needs tinyxml2 and boost algorithm/lexical-cast
           #   and also boost-math to resolve a circular dependency with lexical-cast
-          VCPKG_OPTIONAL_PACKAGES: "boost-algorithm boost-lexical-cast boost-math bullet3 freeglut nlopt opengl pybind11 tinyxml2 urdfdom"
+          VCPKG_OPTIONAL_PACKAGES: "boost-algorithm boost-lexical-cast boost-math bullet3 flann freeglut nlopt opengl pybind11 tinyxml2 urdfdom"
           # ode is temporarily removed from VCPKG_OPTIONAL_PACKAGES due to build failure: https://github.com/dartsim/vcpkg-build/runs/1502221515?check_suite_focus=true#step:4:1440
-          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "flann ipopt osg"
+          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt osg"
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
