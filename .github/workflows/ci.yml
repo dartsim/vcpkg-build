@@ -15,7 +15,7 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "807a7987612bbd702be9d9b8069124be62aff857" # 2021-04-19
+      VCPKG_VERSION: "2021.04.30"
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
