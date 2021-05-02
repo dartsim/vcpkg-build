@@ -15,7 +15,7 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "4b6289b936c71bbdb8f5c65973249132c0946235"
+      VCPKG_VERSION: "45fc55825db2a5bcaffccff1e6afadc519d164ea"
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -42,8 +42,8 @@ jobs:
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe update
-          %VCPKG_ROOT%\vcpkg.exe install --debug --triplet x64-windows %VCPKG_PACKAGES%
-          %VCPKG_ROOT%\vcpkg.exe install --debug --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES%
+          %VCPKG_ROOT%\vcpkg.exe install --triplet x64-windows %VCPKG_PACKAGES%
+          %VCPKG_ROOT%\vcpkg.exe install --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES%
           %VCPKG_ROOT%\vcpkg.exe install list
       # Remove temporary files
       # https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
