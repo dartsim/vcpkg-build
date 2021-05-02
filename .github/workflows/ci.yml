@@ -42,7 +42,7 @@ jobs:
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe update
-          %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
+          %VCPKG_ROOT%\vcpkg.exe install --progress --recurse --triplet x64-windows %VCPKG_PACKAGES%
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES%
       # Remove temporary files
       # https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
