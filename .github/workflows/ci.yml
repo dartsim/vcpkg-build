@@ -37,10 +37,11 @@ jobs:
           # 'dart-utils' needs tinyxml2 and boost algorithm/lexical-cast
           #   and also boost-math to resolve a circular dependency with lexical-cast
           # VCPKG_OPTIONAL_PACKAGES: "boost-algorithm boost-lexical-cast boost-math bullet3 flann freeglut glfw3 nlopt ode opengl osg pybind11 tinyxml2 urdfdom"
-          VCPKG_OPTIONAL_PACKAGES: ""
+          VCPKG_OPTIONAL_PACKAGES: "assimp"
           VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt"
         shell: cmd
         run: |
+          %VCPKG_ROOT%\vcpkg.exe update
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES%
       # Remove temporary files
