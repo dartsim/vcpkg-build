@@ -36,7 +36,7 @@ jobs:
           VCPKG_PACKAGES: "assimp boost-system boost-filesystem ccd eigen3 fcl"
           # 'dart-utils' needs tinyxml2 and boost algorithm/lexical-cast
           #   and also boost-math to resolve a circular dependency with lexical-cast
-          VCPKG_OPTIONAL_PACKAGES: "boost-algorithm boost-lexical-cast boost-math bullet3 flann freeglut glfw3 nlopt ode opengl osg pybind11 tinyxml2 urdfdom"
+          VCPKG_OPTIONAL_PACKAGES: "boost-algorithm boost-lexical-cast boost-math bullet3 flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
           VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt"
         shell: cmd
         run: |
