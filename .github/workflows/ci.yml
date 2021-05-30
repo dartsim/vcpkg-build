@@ -6,8 +6,9 @@ on:
   release:
     types: [published]
   schedule:
-    # Run every day at 02:00
-    - cron: "0 2 * * 0-6"
+    # Run at 02:00 UTC every Saturday
+    # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
+    - cron: "0 2 * * SAT"
 
 jobs:
   build:
