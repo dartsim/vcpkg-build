@@ -32,12 +32,10 @@ jobs:
       # Install DART dependencies
       - name: Install vcpkg Packages
         env:
-          VCPKG_PACKAGES: "assimp ccd eigen3 fcl fmt spdlog"
-          # 'dart-utils' needs tinyxml2 and boost algorithm/lexical-cast
-          #   and also boost-math to resolve a circular dependency with lexical-cast
-          VCPKG_OPTIONAL_PACKAGES: "bullet3 opengl osg pybind11 tinyxml2 urdfdom"
+          VCPKG_PACKAGES: "eigen3 fmt"
+          VCPKG_OPTIONAL_PACKAGES: "assimp bullet3 ccd fcl glew imgui opencl opengl osg pybind11 spdlog tbb tinyxml2 urdfdom"
           # ode is temporarily removed from VCPKG_OPTIONAL_PACKAGES due to build failure: https://github.com/dartsim/vcpkg-build/runs/1502221515?check_suite_focus=true#step:4:1440
-          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt nlopt"
+          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt nlopt ode"
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
