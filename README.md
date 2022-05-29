@@ -8,8 +8,8 @@ This repository publishes archives of [vcpkg] with the [DART] dependencies insta
 
 The installed vcpkg packages are:
 
-- Required dependencies: `assimp, boost-system, boost-filesystem, ccd, eigen3, fcl`
-- Optional dependencies: `boost-algorithm, boost-lexical-cast, boost-math, bullet3, freeglut, ode, opengl, tinyxml2, urdfdom`
+- Required dependencies: `assimp ccd eigen3 fcl fmt spdlog`
+- Optional dependencies: `bullet3 flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom`
 
 To download the archives,
 
