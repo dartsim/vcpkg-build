@@ -15,7 +15,7 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "63e935d967a3410e26bf4a708efa39d8384d2bbb" # 2021-12-02
+      VCPKG_VERSION: "2022.07.25"
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -33,9 +33,8 @@ jobs:
       - name: Install vcpkg Packages
         env:
           VCPKG_PACKAGES: "eigen3 fmt"
-          VCPKG_OPTIONAL_PACKAGES: "assimp bullet3 ccd fcl glew imgui opencl opengl osg pybind11 spdlog tbb tinyxml2 urdfdom"
-          # ode is temporarily removed from VCPKG_OPTIONAL_PACKAGES due to build failure: https://github.com/dartsim/vcpkg-build/runs/1502221515?check_suite_focus=true#step:4:1440
-          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt nlopt ode"
+          VCPKG_OPTIONAL_PACKAGES: "assimp bullet3 ccd fcl glew imgui nlopt ode opencl opengl osg pybind11 spdlog tbb tinyxml2 urdfdom"
+          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt"
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
