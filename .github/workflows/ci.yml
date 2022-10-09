@@ -13,6 +13,15 @@ jobs:
   build:
     runs-on: windows-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        cuda-packages: [""]
+        zip-name: ["vcpkg-dartsim-dependencies"]
+        include:
+          - cuda-packages: cuda
+          - zip-name: vcpkg-dartsim-dependencies-cuda
+
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
       VCPKG_VERSION: "2022.09.27"
@@ -29,6 +38,7 @@ jobs:
           cd /d %VCPKG_ROOT%
           git checkout %VCPKG_VERSION%
           %VCPKG_ROOT%\bootstrap-vcpkg.bat
+          
       # Install DART dependencies
       - name: Install vcpkg Packages
         env:
@@ -38,7 +48,8 @@ jobs:
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
-          %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES%
+          %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES% ${{ matrix.cuda-packages }}
+          
       # Remove temporary files
       # https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
       - name: Cleanup vcpkg Temporary Files
@@ -47,16 +58,18 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\buildtrees
           RMDIR /Q/S %VCPKG_ROOT%\packages
           RMDIR /Q/S %VCPKG_ROOT%\downloads
+          
       - uses: actions/upload-artifact@v2
         with:
-          name: vcpkg-dartsim-dependencies
+          name: ${{ matrix.zip-name }}
           path: C:\dartsim\vcpkg
 
       - name: Prepare Release File
         if: github.event_name == 'release'
         shell: cmd
         run: |
-          7z a vcpkg-dartsim-dependencies.zip %VCPKG_ROOT%
+          7z a ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
+          
       - name: Upload Release Asset
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1.0.2
@@ -64,6 +77,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./vcpkg-dartsim-dependencies.zip
-          asset_name: vcpkg-dartsim-dependencies.zip
+          asset_path: ./${{ matrix.zip-name }}.zip
+          asset_name: ${{ matrix.zip-name }}.zip
           asset_content_type: application/zip
