@@ -34,7 +34,7 @@ jobs:
       - name: Install vcpkg Packages
         env:
           VCPKG_PACKAGES: "assimp ccd eigen3 fcl fmt spdlog"
-          VCPKG_OPTIONAL_PACKAGES: "bullet3 flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
+          VCPKG_OPTIONAL_PACKAGES: "bullet3 freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
           VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt"
         shell: cmd
         run: |
