@@ -14,9 +14,26 @@ jobs:
   build:
     runs-on: windows-2022
 
+    strategy:
+      fail-fast: false
+      matrix:
+        toolset: [""]
+        build_type: [Release]
+        target_dart_version: ["v7.0"]
+        required_deps: ["assimp ccd eigen3 fcl fmt spdlog"]
+        optional_deps: ["bullet3 freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"]
+        include:
+          - target_dart_version: "v6.13"
+            required_deps: "assimp ccd eigen3 fcl fmt spdlog"
+            optional_deps: "bullet3 flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
+          - target_dart_version: "v8.0"
+            required_deps: "eigen3 fmt pkgconf"
+            optional_deps: "assimp bullet3 ccd fcl glew imgui nlopt ode opencl opengl osg pybind11 spdlog tbb tinyxml2 urdfdom"
+
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
       VCPKG_VERSION: "2023.01.09"
+      TARGET_DART_VERSION: ${{ matrix.target_dart_version }}
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -33,9 +50,8 @@ jobs:
       # Install DART dependencies
       - name: Install vcpkg Packages
         env:
-          VCPKG_PACKAGES: "assimp ccd eigen3 fcl fmt spdlog"
-          VCPKG_OPTIONAL_PACKAGES: "bullet3 freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
-          VCPKG_OPTIONAL_PACKAGES_NOT_WORKING: "ipopt"
+          VCPKG_PACKAGES: ${{ matrix.required_deps }}
+          VCPKG_OPTIONAL_PACKAGES: ${{ matrix.optional_deps }}}
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
@@ -50,14 +66,14 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\downloads
       - uses: actions/upload-artifact@v2
         with:
-          name: vcpkg-dartsim-dependencies
+          name: vcpkg-dartsim-deps-${{ matrix.target_dart_version }}
           path: C:\dartsim\vcpkg
 
       - name: Prepare Release File
         if: github.event_name == 'release'
         shell: cmd
         run: |
-          7z a vcpkg-dartsim-dependencies.zip %VCPKG_ROOT%
+          7z a vcpkg-dartsim-deps-%TARGET_DART_VERSION%.zip %VCPKG_ROOT%
       - name: Upload Release Asset
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1.0.2
@@ -65,6 +81,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./vcpkg-dartsim-dependencies.zip
-          asset_name: vcpkg-dartsim-dependencies.zip
+          asset_path: ./vcpkg-dartsim-deps-%TARGET_DART_VERSION%.zip
+          asset_name: vcpkg-dartsim-deps-%TARGET_DART_VERSION%.zip
           asset_content_type: application/zip
