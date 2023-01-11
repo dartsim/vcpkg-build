@@ -17,8 +17,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        toolset: [""]
-        build_type: [Release]
         target_dart_version: ["v7.0"]
         required_deps: ["assimp ccd eigen3 fcl fmt spdlog"]
         optional_deps: ["bullet3 freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"]
