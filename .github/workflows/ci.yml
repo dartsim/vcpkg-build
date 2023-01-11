@@ -49,7 +49,7 @@ jobs:
       - name: Install vcpkg Packages
         env:
           VCPKG_PACKAGES: ${{ matrix.required_deps }}
-          VCPKG_OPTIONAL_PACKAGES: ${{ matrix.optional_deps }}}
+          VCPKG_OPTIONAL_PACKAGES: ${{ matrix.optional_deps }}
         shell: cmd
         run: |
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
