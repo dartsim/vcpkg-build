@@ -19,7 +19,7 @@ jobs:
       matrix:
         target_dart_version: ["v7.0"]
         required_deps: ["assimp ccd eigen3 fcl fmt spdlog"]
-        optional_deps: ["bullet3 freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"]
+        optional_deps: ["bullet3 freeglut glfw3 nlopt ode opencl opengl osg pagmo2 pybind11 tinyxml2 urdfdom"]
         include:
           - target_dart_version: "v6.13"
             required_deps: "assimp ccd eigen3 fcl fmt spdlog"
