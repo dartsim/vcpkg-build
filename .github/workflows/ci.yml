@@ -30,7 +30,7 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "92225e6ce480662b29319d8e917d253976407247"
+      VCPKG_VERSION: "03bef5f1434685ed9e4805f1dda222c69d786486"
       TARGET_DART_VERSION: ${{ matrix.target_dart_version }}
 
     steps:
