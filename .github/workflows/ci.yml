@@ -30,12 +30,12 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "2023.01.09"
+      VCPKG_VERSION: "92225e6ce480662b29319d8e917d253976407247"
       TARGET_DART_VERSION: ${{ matrix.target_dart_version }}
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Install vcpkg
       - name: Install vcpkg
@@ -62,7 +62,7 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\buildtrees
           RMDIR /Q/S %VCPKG_ROOT%\packages
           RMDIR /Q/S %VCPKG_ROOT%\downloads
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: vcpkg-dartsim-deps-${{ matrix.target_dart_version }}
           path: C:\dartsim\vcpkg
@@ -74,7 +74,7 @@ jobs:
           7z a vcpkg-dartsim-deps-%TARGET_DART_VERSION%.zip %VCPKG_ROOT%
       - name: Upload Release Asset
         if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1.0.2
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
