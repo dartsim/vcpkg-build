@@ -6,10 +6,7 @@
 
 This repository publishes archives of [vcpkg] with the [DART] dependencies installed.
 
-The installed vcpkg packages are:
-
-- Required dependencies: `assimp ccd eigen3 fcl fmt spdlog`
-- Optional dependencies: `bullet3 flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom`
+The installed vcpkg packages are different by the DART versions. Please check [.github/workflows/ci.yml](.github/workflows/ci.yml) for the details.
 
 To download the archives,
 
@@ -18,11 +15,20 @@ To download the archives,
 choco install -y wget
 
 # Download the archive (see to check available <tag>: https://github.com/dartsim/vcpkg-build/releases)
-wget -q https://github.com/dartsim/vcpkg-build/releases/download/<tag>/vcpkg-dartsim-dependencies.zip
+wget -q https://github.com/dartsim/vcpkg-build/releases/download/<tag>/<zip_name>.zip
 
 # Extract the vcpkg files
-unzip -qq vcpkg-dartsim-dependencies.zip -d <path>
+unzip -qq <zip_name>.zip -d <path>
 ```
+
+The available `<zip_name>`s are:
+
+- `vcpkg-dartsim-deps-v6.13`
+- `vcpkg-dartsim-deps-v7.0`
+- `vcpkg-dartsim-deps-min-v7.0`
+- `vcpkg-dartsim-deps-cuda-v7.0`
+- `vcpkg-dartsim-deps-v8.0`
+- `vcpkg-dartsim-deps-cuda-v8.0`
 
 ## Release Process
 
