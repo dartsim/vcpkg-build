@@ -33,7 +33,7 @@ jobs:
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "03bef5f1434685ed9e4805f1dda222c69d786486"
+      VCPKG_VERSION: "021ba042f230ba730a4385ae4bbda55107b8288d"
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -50,7 +50,7 @@ jobs:
       - name: Install vcpkg
         shell: cmd
         run: |
-          git clone -q https://github.com/JonLiu1993/vcpkg.git %VCPKG_ROOT%
+          git clone -q https://github.com/microsoft/vcpkg.git %VCPKG_ROOT%
           cd /d %VCPKG_ROOT%
           git checkout %VCPKG_VERSION%
           %VCPKG_ROOT%\bootstrap-vcpkg.bat
