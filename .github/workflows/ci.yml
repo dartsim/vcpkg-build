@@ -41,7 +41,7 @@ jobs:
       - name: Install vcpkg
         shell: cmd
         run: |
-          git clone -q https://github.com/microsoft/vcpkg.git %VCPKG_ROOT%
+          git clone -q https://github.com/JonLiu1993/vcpkg.git %VCPKG_ROOT%
           cd /d %VCPKG_ROOT%
           git checkout %VCPKG_VERSION%
           %VCPKG_ROOT%\bootstrap-vcpkg.bat
