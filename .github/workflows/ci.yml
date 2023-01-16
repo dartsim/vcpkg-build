@@ -17,25 +17,36 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target_dart_version: ["v7.0"]
+        zip-name: ["vcpkg-dartsim-deps-v7.0"]
         required_deps: ["assimp ccd eigen3 fcl fmt spdlog"]
         optional_deps: ["bullet3 freeglut glfw3 nlopt ode opencl opengl osg pagmo2 pybind11 tinyxml2 urdfdom"]
         include:
-          - target_dart_version: "v6.13"
+          - name: "vcpkg-dartsim-deps-v6.13"
             required_deps: "assimp ccd eigen3 fcl fmt spdlog"
             optional_deps: "bullet3 flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
-          - target_dart_version: "v8.0"
+          - name: "vcpkg-dartsim-deps-cuda-v7.0"
+            required_deps: "assimp ccd eigen3 fcl fmt spdlog"
+            optional_deps: "bullet3 cuda freeglut glfw3 nlopt ode opencl opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
+          - name: "vcpkg-dartsim-deps-v8.0"
             required_deps: "eigen3 fmt pkgconf"
             optional_deps: "assimp bullet3 ccd fcl glew imgui nlopt ode opencl opengl osg pybind11 spdlog tbb tinyxml2 urdfdom"
 
     env:
       VCPKG_ROOT: C:\dartsim\vcpkg
       VCPKG_VERSION: "03bef5f1434685ed9e4805f1dda222c69d786486"
-      TARGET_DART_VERSION: ${{ matrix.target_dart_version }}
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+
+      # Install CUDA Toolkit
+      - uses: Jimver/cuda-toolkit@v0.2.8
+        if: matrix.zip-name == 'vcpkg-dartsim-deps-cuda-v7.0'
+        id: cuda-toolkit
+        with:
+          cuda: '11.7.0'
+          
+      - run: nvcc -V
 
       # Install vcpkg
       - name: Install vcpkg
@@ -45,6 +56,7 @@ jobs:
           cd /d %VCPKG_ROOT%
           git checkout %VCPKG_VERSION%
           %VCPKG_ROOT%\bootstrap-vcpkg.bat
+
       # Install DART dependencies
       - name: Install vcpkg Packages
         env:
@@ -54,6 +66,7 @@ jobs:
         run: |
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_OPTIONAL_PACKAGES%
+
       # Remove temporary files
       # https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
       - name: Cleanup vcpkg Temporary Files
@@ -62,16 +75,18 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\buildtrees
           RMDIR /Q/S %VCPKG_ROOT%\packages
           RMDIR /Q/S %VCPKG_ROOT%\downloads
+
       - uses: actions/upload-artifact@v3
         with:
-          name: vcpkg-dartsim-deps-${{ matrix.target_dart_version }}
+          name: ${{ matrix.zip-name }}
           path: C:\dartsim\vcpkg
 
       - name: Prepare Release File
         if: github.event_name == 'release'
         shell: cmd
         run: |
-          7z a vcpkg-dartsim-deps-%TARGET_DART_VERSION%.zip %VCPKG_ROOT%
+          7z a ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
+
       - name: Upload Release Asset
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
@@ -79,6 +94,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./vcpkg-dartsim-deps-%TARGET_DART_VERSION%.zip
-          asset_name: vcpkg-dartsim-deps-%TARGET_DART_VERSION%.zip
+          asset_path: ./${{ matrix.zip-name }}
+          asset_name: ${{ matrix.zip-name }}
           asset_content_type: application/zip
