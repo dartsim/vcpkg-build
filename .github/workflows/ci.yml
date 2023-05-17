@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         zip-name: ["vcpkg-dartsim-deps-v7.0"]
-        deps: ["assimp ccd eigen3 entt fcl fmt spdlog bullet3 coin-or-ipopt freeglut glfw3 nlopt ode opencl opengl osg pagmo2 pybind11 tinyxml2 urdfdom vsg yaml-cpp"]
+        deps: ["assimp ccd eigen3 entt fcl fmt spdlog bullet3 coin-or-ipopt freeglut glfw3 nlopt ode opencl opengl osg pagmo2 pybind11 tinyxml2 urdfdom yaml-cpp"]
         include:
           - zip-name: "vcpkg-dartsim-deps-v6.13"
             deps: "assimp ccd eigen3 fcl fmt spdlog bullet3 coin-or-ipopt flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
