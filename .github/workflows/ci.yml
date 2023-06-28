@@ -10,12 +10,13 @@ on:
     # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
     - cron: "0 2 * * SAT"
 
+env:
+  VCPKG_ROOT: C:\dartsim\vcpkg
+  VCPKG_VERSION: "2023.06.20"
+
 jobs:
   setup_and_build_base:
     runs-on: windows-2022
-    env:
-      VCPKG_ROOT: C:\dartsim\vcpkg
-      VCPKG_VERSION: "2023.06.20"
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -56,14 +57,12 @@ jobs:
           # - zip-name: "vcpkg-dartsim-deps-cuda-v8.0"
           #   deps: "eigen3 fmt pkgconf assimp bullet3 ccd coin-or-ipopt cuda fcl glew imgui nlopt ode opencl opengl osg pybind11 spdlog tbb tinyxml2 urdfdom"
 
-    env:
-      VCPKG_ROOT: C:\dartsim\vcpkg
-
     steps:
       - name: Download Base Artifacts
         uses: actions/download-artifact@v3
         with:
           name: base
+          path: ${{ env.VCPKG_ROOT }}
 
       # Install CUDA Toolkit conditionally
       - uses: Jimver/cuda-toolkit@v0.2.10
