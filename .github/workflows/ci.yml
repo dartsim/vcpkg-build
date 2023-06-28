@@ -76,11 +76,6 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\packages
           RMDIR /Q/S %VCPKG_ROOT%\downloads
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.zip-name }}
-          path: C:\dartsim\vcpkg
-
       - name: Prepare Release File
         if: github.event_name == 'release'
         shell: cmd
