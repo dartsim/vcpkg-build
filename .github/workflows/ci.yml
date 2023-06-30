@@ -90,7 +90,6 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\installed\x64-windows\debug
 
       - name: Prepare Release File
-        if: github.event_name == 'release'
         shell: cmd
         run: |
           7z a ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
