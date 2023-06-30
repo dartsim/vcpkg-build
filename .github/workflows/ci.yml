@@ -87,12 +87,24 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\buildtrees
           RMDIR /Q/S %VCPKG_ROOT%\packages
           RMDIR /Q/S %VCPKG_ROOT%\downloads
+          RMDIR /Q/S %VCPKG_ROOT%\installed\x64-windows\debug
 
       - name: Prepare Release File
         if: github.event_name == 'release'
         shell: cmd
         run: |
           7z a ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
+          @echo off
+          setlocal
+          set file="${{ matrix.zip-name }}.zip"
+          set maxbytesize=2000000000
+      
+          FOR /F "usebackq" %%A IN ('%file%') DO set size=%%~zA
+      
+          if %size% GTR %maxbytesize% (
+              echo File is greater than %maxbytesize% bytes
+              exit /b 1
+          )
 
       - name: Upload Release Asset
         if: github.event_name == 'release'
