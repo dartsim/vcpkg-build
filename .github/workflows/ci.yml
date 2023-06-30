@@ -80,7 +80,7 @@ jobs:
           %VCPKG_ROOT%\vcpkg.exe install --recurse --triplet x64-windows %VCPKG_PACKAGES%
 
       # Remove temporary files
-      # https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
+      # https://learn.microsoft.com/en-us/vcpkg/about/faq#how-can-i-remove-temporary-files
       - name: Cleanup vcpkg Temporary Files
         shell: cmd
         run: |
