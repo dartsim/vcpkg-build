@@ -87,7 +87,6 @@ jobs:
           RMDIR /Q/S %VCPKG_ROOT%\buildtrees
           RMDIR /Q/S %VCPKG_ROOT%\packages
           RMDIR /Q/S %VCPKG_ROOT%\downloads
-          RMDIR /Q/S %VCPKG_ROOT%\installed\x64-windows\debug
 
       - name: Prepare Release File
         shell: cmd
