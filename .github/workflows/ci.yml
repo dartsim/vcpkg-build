@@ -69,7 +69,7 @@ jobs:
         if: contains(matrix.deps, 'cuda')
         id: cuda-toolkit
         with:
-          cuda: "12.2.0"
+          cuda: "12.1.0"
 
       # Install DART dependencies
       - name: Install vcpkg Packages
