@@ -91,7 +91,7 @@ jobs:
       - name: Prepare Release File
         shell: cmd
         run: |
-          7z a ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
+          7z a -mx9 ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
           @echo off
           setlocal
           set file="${{ matrix.zip-name }}.zip"
