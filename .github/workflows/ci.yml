@@ -91,10 +91,10 @@ jobs:
       - name: Prepare Release File
         shell: cmd
         run: |
-          7z a -mx9 ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
+          7z a -v2000m -mx9 ${{ matrix.zip-name }}.zip %VCPKG_ROOT%
           @echo off
           setlocal
-          set file="${{ matrix.zip-name }}.zip"
+          set file="${{ matrix.zip-name }}.zip.001"
           set maxbytesize=2000000000
       
           FOR /F "usebackq" %%A IN ('%file%') DO set size=%%~zA
@@ -105,12 +105,27 @@ jobs:
           )
 
       - name: Upload Release Asset
-        if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./${{ matrix.zip-name }}.zip
-          asset_name: ${{ matrix.zip-name }}.zip
+          asset_path: ./${{ matrix.zip-name }}.zip.001
+          asset_name: ${{ matrix.zip-name }}.zip.001
           asset_content_type: application/zip
+      
+      - name: Upload remaining parts
+        shell: pwsh
+        run: |
+          $parts = Get-ChildItem -Path . -Filter "${{ matrix.zip-name }}.zip.*" -Exclude "*.001"
+          foreach ($part in $parts) {
+              echo "Uploading $part"
+              # Comment out the actual upload during testing
+              # $response = Invoke-RestMethod `
+              #     -Method POST `
+              #     -Uri "${{ github.event.release.upload_url }}?name=$part" `
+              #     -Headers @{Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"} `
+              #     -InFile $part `
+              #     -ContentType "application/zip"
+          }
+      
