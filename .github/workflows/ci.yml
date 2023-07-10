@@ -65,7 +65,7 @@ jobs:
           path: ${{ env.VCPKG_ROOT }}
 
       # Install CUDA Toolkit conditionally
-      - uses: Jimver/cuda-toolkit@v0.2.10
+      - uses: Jimver/cuda-toolkit@v0.2.11
         if: contains(matrix.deps, 'cuda')
         id: cuda-toolkit
         with:
