@@ -12,7 +12,7 @@ on:
 
 env:
   VCPKG_ROOT: C:\dartsim\vcpkg
-  VCPKG_VERSION: "2023.06.20"
+  VCPKG_VERSION: "2023.12.12"
 
 jobs:
   setup_and_build_base:
@@ -40,7 +40,10 @@ jobs:
       fail-fast: false
       matrix:
         zip-name: ["vcpkg-dartsim-deps-v7.0"]
-        deps: ["assimp ccd eigen3 entt fcl fmt spdlog bullet3 coin-or-ipopt freeglut glfw3 nlopt ode opencl opengl osg pagmo2 pybind11 tinyxml2 urdfdom yaml-cpp"]
+        deps:
+          [
+            "assimp ccd eigen3 entt fcl fmt spdlog bullet3 coin-or-ipopt freeglut glfw3 nlopt ode opencl opengl osg pagmo2 pybind11 tinyxml2 urdfdom yaml-cpp",
+          ]
         include:
           - zip-name: "vcpkg-dartsim-deps-v6.13"
             deps: "assimp ccd eigen3 fcl fmt spdlog bullet3 coin-or-ipopt flann freeglut glfw3 nlopt ode opengl osg pagmo2 pybind11 tinyxml2 urdfdom"
@@ -96,9 +99,9 @@ jobs:
           setlocal
           set file="${{ matrix.zip-name }}.zip"
           set maxbytesize=2000000000
-      
+
           FOR /F "usebackq" %%A IN ('%file%') DO set size=%%~zA
-      
+
           if %size% GTR %maxbytesize% (
               echo File is greater than %maxbytesize% bytes
               exit /b 1
